@@ -1,13 +1,13 @@
 function [L]=L(X, H, p, r)
 % Computes Lik
 %Inputs:
-% X – points xi, where i is from 1 to n
+% X ï¿½ points xi, where i is from 1 to n
 % p - points in which we find Lik
 % r - numer of points on each distance
 % H - step for 1 - n points
 %
 %Outputs:
-% Lik – counted array ????
+% Lik ï¿½ counted matrix ????
 % Number of points in X
 %n=size(X,1);
 n = length(X);
