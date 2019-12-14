@@ -5,8 +5,9 @@ if  t < 0 || t > 2*pi
 end
 
 global ModelInfo
-r = ModelInfo.r;
+a = ModelInfo.a;
+b = ModelInfo.b;
 
-v(1) = - r * sin(t);
-v(2) = r * cos(t);
+v(1) = - a * sin(t);
+v(2) =   b * cos(t);
 end

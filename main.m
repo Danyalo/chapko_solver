@@ -1,32 +1,30 @@
 global ModelInfo
 
-n = ModelInfo.n;
-h = ModelInfo.h;
-t0 = ModelInfo.t0;
-tn = ModelInfo.tn;
-r = ModelInfo.r;
+% Global variables
+
+a = ModelInfo.a;
+b = ModelInfo.b;
+n = ModelInfo.n;   % 64
+t0 = ModelInfo.t0; % 0
+tn = ModelInfo.tn; % 2*PI
+
+r = 5; % number of nodes for Gauss-Legrange quadrature
+h = tn/n; % step H
 
 % Exact solution
-func = @(x,y) x^2 - y^2; 
-f = @(t) (r*cos(t))^2-(r*sin(t))^2;
-a = 1;
-b = 3;
-x1 = @(t)a*cos(t);
-x2 = @(t)b*sin(t);
+func = @(x,y) x^2 - y^2;
+f = @(t) (a*cos(t))^2-(b*sin(t))^2;
 
-n = 64;
-x0 = 0;
-xn = 2*pi;
-h = xn/n;
-r = 5;
+% We use Boundary, BoundaryDer, BoundaryDer2 for these
+% x1 = @(t)a*cos(t);
+% x2 = @(t)b*sin(t);
+% x1_der =@(t) -a*sin(t);
+% x1_der2 =@(t) -a*cos(t);
+% x2_der =@(t) b*cos(t);
+% x2_der2 =@(t) -b*sin(t);
 
-x1_der =@(t) -a*sin(t);
-x1_der2 =@(t) -a*cos(t);
-x2_der =@(t) b*cos(t);
-x2_der2 =@(t) -b*sin(t);
-
-t = array(t0,tn,n);
-vector = transpose(arrayfun(f,t));
+t = array(t0,tn,n); % array of n points, [t0, tn]
+vector = transpose(arrayfun(f,t)); % array of values of f in the main nodes
 matrix = [];
 
 for i=1:n-1
@@ -37,6 +35,8 @@ end
 
 nodes = lgwt(5, a, b); % example - not useful
 
+
+testingLik = L(t, zeros(n), r);
 
 doubleSum(n, r, t, nodes);
 for i=1:n

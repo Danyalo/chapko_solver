@@ -1,29 +1,27 @@
-function [L]=L(X, H, p, r)
+function [L]=L(T, p, r)
 % Computes Lik
 %Inputs:
-% X � points xi, where i is from 1 to n
-% p - points in which we find Lik
+% T - points ti, where i is from 1 to n
+% p - points in which we find Lik, from 1 to n
 % r - numer of points on each distance
-% H - step for 1 - n points
 %
 %Outputs:
-% Lik � counted matrix ????
-% Number of points in X
-%n=size(X,1);
-n = length(X);
+% Lik - counted matrix
 
-%global ModelInfo
-%r = ModelInfo.r;
-L = [,];
+% Number of points in X
+n = length(T);
+h = ( T(n) - T(1) ) / (n-1);
+
+L = [];
 % Compute Lik
 for i=2:n
-    for k=0:r
-        if (p(i) >= X(i-1) && p(i) <= X(i))
-            point=(p(i)-X(i-1))/H;
-            newXr = linspace(X(i-1), X(i), r);
-            L(i+1,k+1) = Alpha(newXr, point);
+    for k=1:r
+        if (p(i) >= T(i-1) && p(i) <= T(i))
+            point = ( p(i) - T(i-1) ) / h;
+            newXr = linspace(T(i-1), T(i), r);
+            L(i+1,k) = Alpha(newXr, point, k);
         else
-            L(i+1,k+1) = 0;
+            L(i+1,k) = 0;
         end
         
     end

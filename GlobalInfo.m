@@ -1,7 +1,8 @@
 global ModelInfo
 
-% Coefficient used for calculating X and XDerivative functions
-ModelInfo.r = 5;
+% Coefficients used for calculating X and XDerivative functions
+ModelInfo.a = 5;
+ModelInfo.b = 5;
 
 % Number of points
 n = 64;
