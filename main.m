@@ -7,13 +7,17 @@ b = ModelInfo.b;
 n = ModelInfo.n;   % 64
 t0 = ModelInfo.t0; % 0
 tn = ModelInfo.tn; % 2*PI
+r = ModelInfo.r; % number of nodes for Gauss-Legrange quadrature
 
-r = 5; % number of nodes for Gauss-Legrange quadrature
 h = tn/n; % step H
 
 % Exact solution
 func = @(x,y) x^2 - y^2;
 f = @(t) (a*cos(t))^2-(b*sin(t))^2;
+
+% Our point of interest
+x = 0.1;
+y = 0.5;
 
 % We use Boundary, BoundaryDer, BoundaryDer2 for these
 % x1 = @(t)a*cos(t);
@@ -24,23 +28,44 @@ f = @(t) (a*cos(t))^2-(b*sin(t))^2;
 % x2_der2 =@(t) -b*sin(t);
 
 t = array(t0,tn,n); % array of n points, [t0, tn]
-vector = transpose(arrayfun(f,t)); % array of values of f in the main nodes
-matrix = [];
-
+t_new = zeros( (n-1)*r ,1); % array of n*r points, [t0, tn]
 for i=1:n-1
-    sigma_i_k = lgwt(r, t(i), t(i+1));
-    % do something with nodes here - or store if there's the need to have
-    % all n * r nodes at once
+    sigma = lgwt(r, t(i), t(i+1));
+    for k=1:r
+        index = (i-1)*r + k;
+        t_new(index) = sigma(k);
+    end
 end
 
-nodes = lgwt(5, a, b); % example - not useful
+vector = arrayfun(f,t_new); % array of values of f in the main nodes
+matrix = [];
+
+for i1=2:n
+    for k1=1:r
+        xIK = t_new( (i1-2)*r + k1 );
+        lik = L_i_k(xIK, t, i1, k1);
+        for i2=2:n
+            for k2=1:r
+                matrix( (i1-2)*r + k1, (i2-2)*r + k2) = ...
+                        lik - h * ( K(xIK, t(i2-1)) * L_i_k(t(i2-1), t, i2, k2) + ...
+                                    K(xIK, t(i2))   * L_i_k(xIK,     t, i2, k2) );
+            end
+        end
+    end
+end
 
 
-testingLik = L(t, zeros(n), r);
+Phi = linsolve(matrix, vector);
 
-doubleSum(n, r, t, nodes);
-for i=1:n
-    for j=1:n
+
+fApprox = 0;
+for i=2:n
+    for k=1:r
+        fApprox = fApprox +  3;
         %matrix(i,j) = -pi +h* Kernel_t_t(x1_der,x2_der, x1_der2, x2_der2,t(j));
     end
 end
+
+
+% Actual value u(X)
+result = func(x, y);

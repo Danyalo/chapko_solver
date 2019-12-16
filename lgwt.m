@@ -44,6 +44,8 @@ while max(abs(y-y0))>eps
     
 end
 % Linear map from[-1,1] to [a,b]
-x=(a*(1-y)+b*(1+y))/2;      
+x=(a*(1-y)+b*(1+y))/2;
+x = flip(x);   % Because we want them in ascending order
+
 % Compute the weights
 w=(b-a)./((1-y.^2).*Lp.^2)*(N2/N1)^2;

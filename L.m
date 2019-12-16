@@ -23,6 +23,5 @@ for i=2:n
         else
             L(i+1,k) = 0;
         end
-        
     end
 end
