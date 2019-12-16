@@ -4,7 +4,7 @@ global ModelInfo
 
 a = ModelInfo.a;
 b = ModelInfo.b;
-n = ModelInfo.n;   % 64
+n = ModelInfo.n;   % 4
 t0 = ModelInfo.t0; % 0
 tn = ModelInfo.tn; % 2*PI
 r = ModelInfo.r; % number of nodes for Gauss-Legrange quadrature
@@ -54,18 +54,28 @@ for i1=2:n
     end
 end
 
-
+ 
 Phi = linsolve(matrix, vector);
-
 
 fApprox = 0;
 for i=2:n
     for k=1:r
-        fApprox = fApprox +  3;
-        %matrix(i,j) = -pi +h* Kernel_t_t(x1_der,x2_der, x1_der2, x2_der2,t(j));
+        fApprox = fApprox + Phi( (i-2)*r + k ) / ( (n-1) * r);
+    end
+end
+
+
+for i=2:n
+    for k=1:r
+
     end
 end
 
 
 % Actual value u(X)
 result = func(x, y);
+u_sol = fApprox;
+
+disp(result);
+disp(u_sol);
+disp(abs(result-u_sol));

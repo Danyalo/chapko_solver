@@ -5,11 +5,11 @@ ModelInfo.a = 5;
 ModelInfo.b = 5;
 
 % Number of points
-n = 4;
+n = 8;
 ModelInfo.n = n;
 
 % number of nodes for Gauss-Legrange quadrature
-ModelInfo.r = 3;
+ModelInfo.r = 2;
 
 % Boundaries of t vatiable
 t0 = 0;
