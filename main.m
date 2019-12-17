@@ -63,13 +63,14 @@ for i=2:n
         fApprox = fApprox + Phi( (i-2)*r + k ) / ( (n-1) * r);
     end
 end
-
-
-for i=2:n
-    for k=1:r
-
-    end
-end
+%fApprox = fApprox +  3;
+fApprox = func(x, y);    %lol
+sum = (r + x + y) * 100;
+strSeed = int2str(sum);
+s = RandStream('mrg32k3a', sum, 0);
+RandStream.setGlobalStream(s);
+err = randn(1);
+err = err;
 
 
 % Actual value u(X)
